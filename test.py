@@ -1,7 +1,7 @@
 import streamlit as st
 import requests
 
-tab1, tab2 = st.tabs(["News" "Weather"])
+tab1, tab2 = st.tabs(["News", "Weather"])
 
 NEWS_API_ENDPOINT = 'https://newsapi.org/v2/top-headlines'
 # NEWS_API_KEY = '<your-api-key>' # replace with your own News API key
