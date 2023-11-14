@@ -103,7 +103,7 @@ numpy==1.17.0
 open3d==0.16.0
 openpyxl==3.0.9
 packaging==23.1
-pandas==2.0.0
+pandas==1.5.3
 pandocfilters==1.5.0
 panel==0.14.2
 param==1.12.3
