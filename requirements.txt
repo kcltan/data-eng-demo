@@ -99,7 +99,7 @@ nest-asyncio
 networkx
 notebook
 numba
-numpy
+numpy = 1.20.3
 open3d
 openpyxl
 packaging
