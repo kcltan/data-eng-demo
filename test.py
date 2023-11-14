@@ -15,7 +15,7 @@ def fetch_news(country, category=None):
         params['category'] = category
     response = requests.get(NEWS_API_ENDPOINT, params=params)
     return response.json()
-st.set_page_config(page_title='News Aggregator')
+#st.set_page_config(page_title='News Aggregator')
 st.title('News Aggregator')
 st.markdown(
         f"""
