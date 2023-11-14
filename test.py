@@ -146,7 +146,7 @@ with tab2:
         hourly_df.rename(columns = {'temperature_2m':'Temperature °C'}, inplace = True)
         hourly_df.rename(columns = {'precipitation':'Precipitation mm'}, inplace = True)
         
-        tz = tzwhere.tzwhere
+        tz = tzwhere.tzwhere()
         timezone_str = tz.tzNameAt(lat, lng) # Seville coordinates
         
         timezone_loc = pytz.timezone(timezone_str)
