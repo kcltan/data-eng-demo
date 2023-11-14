@@ -59,6 +59,9 @@ with tab1:
         st.write(article['url'])
 
 with tab2:
+    # Title and description for your app
+    st.title("How's the weather? :sun_behind_rain_cloud:")
+
     st.subheader("Choose location")
 
     file = "worldcities.csv"
@@ -68,15 +71,17 @@ with tab2:
     # Select Country
     country_set = set(data.loc[:,"country"])
     country = st.selectbox('Select a country', options=country_set)
-   
+
     country_data = data.loc[data.loc[:,"country"] == country,:]
+
     city_set = country_data.loc[:,"city_ascii"] 
+
     city = st.selectbox('Select a city', options=city_set)
 
 
     lat = float(country_data.loc[data.loc[:,"city_ascii"] == city, "lat"])
     lng = float(country_data.loc[data.loc[:,"city_ascii"] == city, "lng"])
-   
+
     response_current = requests.get(f'https://api.open-meteo.com/v1/forecast?latitude={lat}&longitude={lng}&current_weather=true')
 
     st.subheader("Current weather")
@@ -140,39 +145,40 @@ with tab2:
         hourly_df.rename(columns = {'time':'Week ahead'}, inplace = True)
         hourly_df.rename(columns = {'temperature_2m':'Temperature °C'}, inplace = True)
         hourly_df.rename(columns = {'precipitation':'Precipitation mm'}, inplace = True)
-
+        
         tz = tzwhere.tzwhere(forceTZ=True)
         timezone_str = tz.tzNameAt(lat, lng, forceTZ=True) # Seville coordinates
-
+        
         timezone_loc = pytz.timezone(timezone_str)
         dt = datetime.now()
         tzoffset = timezone_loc.utcoffset(dt)#-timedelta(hours=1,minutes=0)
-
+        
+        
         # Create figure with secondary y axis
         fig = make_subplots(specs=[[{"secondary_y":True}]])
-
-
+        
+        
         week_ahead = pd.to_datetime(hourly_df['Week ahead'],format="%Y-%m-%dT%H:%M")
-
+        
         # Add traces
         fig.add_trace(go.Scatter(x = week_ahead+tzoffset, 
                                 y = hourly_df['Temperature °C'],
                                 name = "Temperature °C"),
                     secondary_y = False,)
-
+        
         fig.add_trace(go.Bar(x = week_ahead+tzoffset, 
                             y = hourly_df['Precipitation mm'],
                             name = "Precipitation mm"),
                     secondary_y = True,)
-
+        
         time_now = datetime.now(tmz.utc)+tzoffset
-
+        
         fig.add_vline(x = time_now, line_color="red", opacity=0.4)
         fig.add_annotation(x = time_now, y=max(hourly_df['Temperature °C'])+5,
                     text = time_now.strftime("%d %b %y, %H:%M"),
                     showarrow=False,
                     yshift=0)
-
+        
         fig.update_yaxes(range=[min(hourly_df['Temperature °C'])-10,
                                 max(hourly_df['Temperature °C'])+10],
                         title_text="Temperature °C",
@@ -185,8 +191,8 @@ with tab2:
                         title_text="Precipitation (rain/showers/snow) mm",
                         secondary_y=True,
                         showgrid=False)
-
-
+        
+        
         fig.update_layout(legend=dict(
             orientation="h",
             yanchor="bottom",
@@ -194,15 +200,15 @@ with tab2:
             xanchor="right",
             x=0.7
         ))
-
+        
         # center on Liberty Bell, add marker
         m = folium.Map(location=[lat, lng], zoom_start=7)
         folium.Marker([lat, lng], 
                 popup=city+', '+country, 
                 tooltip=city+', '+country).add_to(m)
-
+        
         # call to render Folium map in Streamlit
-
+        
         # Make folium map responsive to adapt to smaller display size (
         # e.g., on smartphones and tablets)
         make_map_responsive= """
@@ -211,11 +217,18 @@ with tab2:
         </style>
         """
         st.markdown(make_map_responsive, unsafe_allow_html=True)
-
+        
         # Display chart
         st.plotly_chart(fig, use_container_width=True)
-
+        
         # Display map
         st_data = folium_static(m, height = 370)
+        
+        
+        # Concluding remarks
+        st.write('Weather data source: [http://open-meteo.com](http://open-meteo.com) \n\n'+
+                'List of 40,000+ world cities: [https://simplemaps.com/data/world-cities](https://simplemaps.com/data/world-cities) \n\n' +
+                'Github repository: [streamlit-weather-app](https://github.com/ndakov/streamlit-weather-app)')
+        st.write('Thanks for stopping by. Cheers!')
 
 
