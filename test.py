@@ -141,82 +141,81 @@ with tab2:
         hourly_df.rename(columns = {'temperature_2m':'Temperature °C'}, inplace = True)
         hourly_df.rename(columns = {'precipitation':'Precipitation mm'}, inplace = True)
 
-    tz = tzwhere.tzwhere(forceTZ=True)
-    timezone_str = tz.tzNameAt(lat, lng, forceTZ=True) # Seville coordinates
+        tz = tzwhere.tzwhere(forceTZ=True)
+        timezone_str = tz.tzNameAt(lat, lng, forceTZ=True) # Seville coordinates
 
-    timezone_loc = pytz.timezone(timezone_str)
-    dt = datetime.now()
-    tzoffset = timezone_loc.utcoffset(dt)#-timedelta(hours=1,minutes=0)
+        timezone_loc = pytz.timezone(timezone_str)
+        dt = datetime.now()
+        tzoffset = timezone_loc.utcoffset(dt)#-timedelta(hours=1,minutes=0)
 
-
-    # Create figure with secondary y axis
-    fig = make_subplots(specs=[[{"secondary_y":True}]])
-
-
-    week_ahead = pd.to_datetime(hourly_df['Week ahead'],format="%Y-%m-%dT%H:%M")
-
-    # Add traces
-    fig.add_trace(go.Scatter(x = week_ahead+tzoffset, 
-                            y = hourly_df['Temperature °C'],
-                            name = "Temperature °C"),
-                secondary_y = False,)
-
-    fig.add_trace(go.Bar(x = week_ahead+tzoffset, 
-                        y = hourly_df['Precipitation mm'],
-                        name = "Precipitation mm"),
-                secondary_y = True,)
-
-    time_now = datetime.now(tmz.utc)+tzoffset
-
-    fig.add_vline(x = time_now, line_color="red", opacity=0.4)
-    fig.add_annotation(x = time_now, y=max(hourly_df['Temperature °C'])+5,
-                text = time_now.strftime("%d %b %y, %H:%M"),
-                showarrow=False,
-                yshift=0)
-
-    fig.update_yaxes(range=[min(hourly_df['Temperature °C'])-10,
-                            max(hourly_df['Temperature °C'])+10],
-                    title_text="Temperature °C",
-                    secondary_y=False,
-                    showgrid=False,
-                    zeroline=False)
-        
-    fig.update_yaxes(range=[min(hourly_df['Precipitation mm'])-2,
-                            max(hourly_df['Precipitation mm'])+8], 
-                    title_text="Precipitation (rain/showers/snow) mm",
-                    secondary_y=True,
-                    showgrid=False)
+        # Create figure with secondary y axis
+        fig = make_subplots(specs=[[{"secondary_y":True}]])
 
 
-    fig.update_layout(legend=dict(
-        orientation="h",
-        yanchor="bottom",
-        y=1.02,
-        xanchor="right",
-        x=0.7
-    ))
+        week_ahead = pd.to_datetime(hourly_df['Week ahead'],format="%Y-%m-%dT%H:%M")
 
-    # center on Liberty Bell, add marker
-    m = folium.Map(location=[lat, lng], zoom_start=7)
-    folium.Marker([lat, lng], 
-            popup=city+', '+country, 
-            tooltip=city+', '+country).add_to(m)
+        # Add traces
+        fig.add_trace(go.Scatter(x = week_ahead+tzoffset, 
+                                y = hourly_df['Temperature °C'],
+                                name = "Temperature °C"),
+                    secondary_y = False,)
 
-    # call to render Folium map in Streamlit
+        fig.add_trace(go.Bar(x = week_ahead+tzoffset, 
+                            y = hourly_df['Precipitation mm'],
+                            name = "Precipitation mm"),
+                    secondary_y = True,)
 
-    # Make folium map responsive to adapt to smaller display size (
-    # e.g., on smartphones and tablets)
-    make_map_responsive= """
-    <style>
-    [title~="st.iframe"] { width: 100%}
-    </style>
-    """
-    st.markdown(make_map_responsive, unsafe_allow_html=True)
+        time_now = datetime.now(tmz.utc)+tzoffset
 
-    # Display chart
-    st.plotly_chart(fig, use_container_width=True)
+        fig.add_vline(x = time_now, line_color="red", opacity=0.4)
+        fig.add_annotation(x = time_now, y=max(hourly_df['Temperature °C'])+5,
+                    text = time_now.strftime("%d %b %y, %H:%M"),
+                    showarrow=False,
+                    yshift=0)
 
-    # Display map
-    st_data = folium_static(m, height = 370)
+        fig.update_yaxes(range=[min(hourly_df['Temperature °C'])-10,
+                                max(hourly_df['Temperature °C'])+10],
+                        title_text="Temperature °C",
+                        secondary_y=False,
+                        showgrid=False,
+                        zeroline=False)
+            
+        fig.update_yaxes(range=[min(hourly_df['Precipitation mm'])-2,
+                                max(hourly_df['Precipitation mm'])+8], 
+                        title_text="Precipitation (rain/showers/snow) mm",
+                        secondary_y=True,
+                        showgrid=False)
+
+
+        fig.update_layout(legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=1.02,
+            xanchor="right",
+            x=0.7
+        ))
+
+        # center on Liberty Bell, add marker
+        m = folium.Map(location=[lat, lng], zoom_start=7)
+        folium.Marker([lat, lng], 
+                popup=city+', '+country, 
+                tooltip=city+', '+country).add_to(m)
+
+        # call to render Folium map in Streamlit
+
+        # Make folium map responsive to adapt to smaller display size (
+        # e.g., on smartphones and tablets)
+        make_map_responsive= """
+        <style>
+        [title~="st.iframe"] { width: 100%}
+        </style>
+        """
+        st.markdown(make_map_responsive, unsafe_allow_html=True)
+
+        # Display chart
+        st.plotly_chart(fig, use_container_width=True)
+
+        # Display map
+        st_data = folium_static(m, height = 370)
 
 
