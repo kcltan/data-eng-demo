@@ -116,7 +116,7 @@ plotly-express==0.4.1
 pooch==1.6.0
 prometheus-client==0.12.0
 prompt-toolkit==3.0.20
-protobuf==4.23.3
+protobuf==3.12
 pyarrow==12.0.1
 pycodestyle==2.7.0
 pycparser==2.21
