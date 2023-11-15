@@ -28,6 +28,8 @@ with tab1:
         response = requests.get(NEWS_API_ENDPOINT, params=params)
         return response.json()
 
+    st.title('News Aggregator')
+  
     # Choose the country
     countries = ['US', 'GB', 'IN', 'CA', 'AU', 'FR', 'DE', 'JP', 'CN', 'RU', 'BR', 'MX', 'IT', 'ES', 'KR']# add more countries as needed
     selected_country = st.selectbox('Select a country', countries)
@@ -35,10 +37,6 @@ with tab1:
     # Choose the category
     categories = ['All','Business', 'Entertainment', 'General', 'Health', 'Science', 'Sports', 'Technology']
     selected_category = st.selectbox('Select a category (optional)', categories)
-
-    st.title('News Aggregator')
-    st.write(f'Selected country: {selected_country}')
-    st.write(f'Selected category: {selected_category}')
 
     st.markdown(
         f"""
