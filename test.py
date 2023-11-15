@@ -227,11 +227,12 @@ with tab2:
         
 with tab3:
 
+
     # set the list of stock tickers to track
     tickers = ['AAPL', 'MSFT', 'AMZN', 'GOOGL', 'FB']
 
     # get the daily performance of the stocks using the Yahoo Finance API
-    stock_data = yf.download(tickers, period='1d')['Close']
+    stock_data = yf.download(tickers, period='2d')['Close']
 
     # create a Streamlit app
     st.title('Stocks Daily Performance')
