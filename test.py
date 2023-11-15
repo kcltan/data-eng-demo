@@ -228,6 +228,7 @@ with tab2:
         st_data = folium_static(m, height = 370)
         
 with tab3:
+
     # set the list of stock tickers to track
     tickers = ['AAPL', 'MSFT', 'AMZN', 'GOOGL']
 
@@ -238,30 +239,29 @@ with tab3:
     st.title('Stocks Daily Performance')
     st.write('Daily performance of the selected stocks')
 
-    # create a widget for each stock
-    for ticker in tickers:
+    # create two columns for the stocks
+    col1, col2 = st.columns(2)
+
+    # loop through the tickers and display the stock values
+    for i, ticker in enumerate(tickers):
         # get the stock data for the current ticker
         data = stock_data[ticker]
         
-        # create two columns for the stock values
-        col1, col2 = st.columns(2)
-        
         # show the stock name in bold
-        with col1:
-            st.write(f'**{ticker}**')
+        st.write(f'**{ticker}**')
         
         # show the current value of the stock
-        with col2:
-            st.metric(label='Current value', value=f'{data.iloc[-1]:.2f}')
+        st.metric(label='Current value', value=f'{data.iloc[-1]:.2f}', key=f'{ticker}_current')
         
         # show the previous day's closing value of the stock
-        with col1:
-            st.metric(label='Previous day\'s closing value', value=f'{data.iloc[-2]:.2f}')
+        st.metric(label='Previous day\'s closing value', value=f'{data.iloc[-2]:.2f}', key=f'{ticker}_previous')
         
         # show the percentage change in the stock value
         change = (data.iloc[-1] - data.iloc[-2]) / data.iloc[-2] * 100
-        with col2:
-            st.metric(label='Percentage change', value=f'{change:.2f}%')
+        st.metric(label='Percentage change', value=f'{change:.2f}%', key=f'{ticker}_change')
         
         # add a separator between the stocks
-        st.write('---')
+        if (i+1) % 2 == 0:
+            col2.write('---')
+        else:
+            col1.write('---')
