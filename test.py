@@ -258,9 +258,9 @@ with tab3:
         change = (data.iloc[-1] - data.iloc[-2]) / data.iloc[-2] * 100
         with col3:
             if change >= 0:
-                st.metric(label='Percentage change', value=f'{change:.2f}%' + '🟢')
+                st.metric(label='Percentage change', value=f'{change:.2f}%' + ' 🟢')
             else:
-                st.metric(label='Percentage change', value=f'{change:.2f}%' + '🔴')
+                st.metric(label='Percentage change', value=f'{change:.2f}%' + ' 🔴')
 
         
         # add a separator between the stocks
