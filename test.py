@@ -235,46 +235,29 @@ with tab3:
     tickers = ['AAPL', 'MSFT', 'AMZN', 'GOOGL', 'FB']
 
     # get the daily performance of the stocks using the Yahoo Finance API
-    stock_data = yf.download(tickers, period='1d')['Close']
+    stock_data = yf.download(tickers, period='2d')['Close']
 
     # create a Streamlit app
     st.title('Stocks Daily Performance')
     st.write('Daily performance of the selected stocks')
 
     # create a widget for each stock
-    for i in range(0, len(tickers)-1, 2):
-        # create a row for two stocks
-        col1, col2 = st.columns(2)
+    for ticker in tickers:
+        # get the stock data for the current ticker
+        data = stock_data[ticker]
         
-        # get the stock data for the current tickers
-        data1 = stock_data[tickers[i]]
-        data2 = stock_data[tickers[i+1]]
+        # show the stock name in bold
+        st.write(f'**{ticker}**')
         
-        # show the stock names in bold
-        with col1:
-            st.write(f'**{tickers[i]}**')
-        with col2:
-            st.write(f'**{tickers[i+1]}**')
+        # show the current value of the stock
+        st.write(f'Current value: {data.iloc[-1]}')
         
-        # show the current values of the stocks
-        with col1:
-            st.write(f'{data1.iloc[-1]}')
-        with col2:
-            st.write(f'{data2.iloc[-1]}')
+        # show the previous day's closing value of the stock
+        st.write(f'Previous day\'s closing value: {data.iloc[-2]}')
         
-        # show the previous day's closing values of the stocks
-        with col1:
-            st.write(f'{data1.iloc[-2]}')
-        with col2:
-            st.write(f'{data2.iloc[-2]}')
+        # show the percentage change in the stock value
+        change = (data.iloc[-1] - data.iloc[-2]) / data.iloc[-2] * 100
+        st.write(f'Percentage change: {change:.2f}%')
         
-        # show the percentage changes in the stock values
-        with col1:
-            change1 = (data1.iloc[-1] - data1.iloc[-2]) / data1.iloc[-2] * 100
-            st.write(f'{change1:.2f}%')
-        with col2:
-            change2 = (data2.iloc[-1] - data2.iloc[-2]) / data2.iloc[-2] * 100
-            st.write(f'{change2:.2f}%')
-        
-        # add a separator between the rows
+        # add a separator between the stocks
         st.write('---')
