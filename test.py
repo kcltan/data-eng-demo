@@ -10,8 +10,9 @@ import pytz
 from tzwhere import tzwhere
 import folium
 from streamlit_folium import folium_static
+import yfinance as yf
 
-tab1, tab2 = st.tabs(["News", "Weather"])
+tab1, tab2, tab3 = st.tabs(["News", "Weather","Stocks"])
 
 NEWS_API_ENDPOINT = 'https://newsapi.org/v2/top-headlines'
 # NEWS_API_KEY = '<your-api-key>' # replace with your own News API key
@@ -224,4 +225,36 @@ with tab2:
         # Display map
         st_data = folium_static(m, height = 370)
         
+with tab3:
+    # set the ticker symbol for FTSE 100 index
+    ticker = "^FTSE"
 
+    # get the stock information from Yahoo Finance API
+    stock_info = yf.Ticker(ticker).info
+
+    # create a dictionary to store the stock information
+    stock_dict = {
+        'Name': stock_info['longName'],
+        'Symbol': stock_info['symbol'],
+        'Exchange': stock_info['exchange'],
+        'Currency': stock_info['currency'],
+        'Market Cap': stock_info['marketCap'],
+        'Price': stock_info['regularMarketPrice'],
+        'Open': stock_info['regularMarketOpen'],
+        'High': stock_info['regularMarketDayHigh'],
+        'Low': stock_info['regularMarketDayLow'],
+        'Volume': stock_info['regularMarketVolume']
+    }
+
+    # create a pandas dataframe from the stock dictionary
+    df = pd.DataFrame.from_dict(stock_dict, orient='index', columns=['Value'])
+
+    # set the index name to 'Metric'
+    df.index.name = 'Metric'
+
+    # create a Streamlit app
+    st.title('FTSE 100 Stock Information')
+    st.write('Latest stock information for the FTSE 100 index')
+
+    # show the stock information in a table
+    st.table(df)
