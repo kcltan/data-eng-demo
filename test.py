@@ -242,14 +242,18 @@ with tab3:
         # get the stock data for the current ticker
         data = stock_data[ticker]
         
-        # create a slider widget for the stock data
-        min_value = data.min()
-        max_value = data.max()
-        default_value = data.iloc[-1]
-        value = st.slider(ticker, min_value, max_value, default_value)
-        
-        # show the stock data in a line chart
-        st.line_chart(data)
+        # show the stock name in bold
+        st.write(f'**{ticker}**')
         
         # show the current value of the stock
-        st.write(f'Current value of {ticker}: {value}')
+        st.write(f'Current value: {data.iloc[-1]}')
+        
+        # show the previous day's closing value of the stock
+        st.write(f'Previous day\'s closing value: {data.iloc[-2]}')
+        
+        # show the percentage change in the stock value
+        change = (data.iloc[-1] - data.iloc[-2]) / data.iloc[-2] * 100
+        st.write(f'Percentage change: {change:.2f}%')
+        
+        # add a separator between the stocks
+        st.write('---')
