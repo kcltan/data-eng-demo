@@ -230,7 +230,6 @@ with tab2:
         st_data = folium_static(m, height = 370)
         
 with tab3:
-
     # set the list of stock tickers to track
     tickers = ['AAPL', 'MSFT', 'AMZN', 'GOOGL', 'FB']
 
@@ -244,29 +243,37 @@ with tab3:
     # create a widget for each stock
     for i in range(0, len(tickers), 2):
         # create a row for two stocks
-        row = st.beta_container()
+        col1, col2 = st.columns(2)
         
         # get the stock data for the current tickers
         data1 = stock_data[tickers[i]]
         data2 = stock_data[tickers[i+1]]
         
         # show the stock names in bold
-        with row:
-            st.write(f'**{tickers[i]}**', f'**{tickers[i+1]}**')
+        with col1:
+            st.write(f'**{tickers[i]}**')
+        with col2:
+            st.write(f'**{tickers[i+1]}**')
         
         # show the current values of the stocks
-        with row:
-            st.write(f'{data1.iloc[-1]}', f'{data2.iloc[-1]}')
+        with col1:
+            st.write(f'{data1.iloc[-1]}')
+        with col2:
+            st.write(f'{data2.iloc[-1]}')
         
         # show the previous day's closing values of the stocks
-        with row:
-            st.write(f'{data1.iloc[-2]}', f'{data2.iloc[-2]}')
+        with col1:
+            st.write(f'{data1.iloc[-2]}')
+        with col2:
+            st.write(f'{data2.iloc[-2]}')
         
         # show the percentage changes in the stock values
-        with row:
+        with col1:
             change1 = (data1.iloc[-1] - data1.iloc[-2]) / data1.iloc[-2] * 100
+            st.write(f'{change1:.2f}%')
+        with col2:
             change2 = (data2.iloc[-1] - data2.iloc[-2]) / data2.iloc[-2] * 100
-            st.write(f'{change1:.2f}%', f'{change2:.2f}%')
+            st.write(f'{change2:.2f}%')
         
         # add a separator between the rows
         st.write('---')
