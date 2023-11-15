@@ -230,6 +230,7 @@ with tab2:
         st_data = folium_static(m, height = 370)
         
 with tab3:
+
     # set the list of stock tickers to track
     tickers = ['AAPL', 'MSFT', 'AMZN', 'GOOGL', 'FB']
 
@@ -241,7 +242,7 @@ with tab3:
     st.write('Daily performance of the selected stocks')
 
     # create a widget for each stock
-    for i in range(0, len(tickers), 2):
+    for i in range(0, len(tickers)-1, 2):
         # create a row for two stocks
         col1, col2 = st.columns(2)
         
