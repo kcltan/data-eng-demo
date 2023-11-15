@@ -242,25 +242,21 @@ with tab3:
     for ticker in tickers:
         # get the stock data for the current ticker
         data = stock_data[ticker]
-        
+        st.write(f'**{ticker}**')
         # create two columns for the stock values
-        col1, col2 = st.columns(2)
-        
-        # show the stock name in bold
-        with col1:
-            st.write(f'**{ticker}**')
-        
+        col1, col2, col3 = st.columns(3)
+
         # show the current value of the stock
-        with col2:
+        with col1:
             st.metric(label='Current value', value=f'{data.iloc[-1]:.2f}')
         
         # show the previous day's closing value of the stock
-        with col1:
+        with col2:
             st.metric(label='Previous day\'s closing value', value=f'{data.iloc[-2]:.2f}')
         
         # show the percentage change in the stock value
         change = (data.iloc[-1] - data.iloc[-2]) / data.iloc[-2] * 100
-        with col2:
+        with col3:
             st.metric(label='Percentage change', value=f'{change:.2f}%')
         
         # add a separator between the stocks
