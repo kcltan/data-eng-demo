@@ -15,7 +15,6 @@ import yfinance as yf
 tab1, tab2, tab3 = st.tabs(["News", "Weather","Stocks"])
 
 NEWS_API_ENDPOINT = 'https://newsapi.org/v2/top-headlines'
-# NEWS_API_KEY = '<your-api-key>' # replace with your own News API key
 with tab1:
     
     def fetch_news(country, category=None):
@@ -29,14 +28,17 @@ with tab1:
         return response.json()
 
     st.title('News Aggregator')
-  
+    col1, col2 = st.columns(2)
+
     # Choose the country
-    countries = ['US', 'GB', 'IN', 'CA', 'AU', 'FR', 'DE', 'JP', 'CN', 'RU', 'BR', 'MX', 'IT', 'ES', 'KR']# add more countries as needed
-    selected_country = st.selectbox('Select a country', countries)
+    with col1:
+        countries = ['US', 'GB', 'IN', 'CA', 'AU', 'FR', 'DE', 'JP', 'CN', 'RU', 'BR', 'MX', 'IT', 'ES', 'KR']# add more countries as needed
+        selected_country = st.selectbox('Select a country', countries)
 
     # Choose the category
-    categories = ['All','Business', 'Entertainment', 'General', 'Health', 'Science', 'Sports', 'Technology']
-    selected_category = st.selectbox('Select a category (optional)', categories)
+    with col2:
+        categories = ['All','Business', 'Entertainment', 'General', 'Health', 'Science', 'Sports', 'Technology']
+        selected_category = st.selectbox('Select a category (optional)', categories)
 
     st.markdown(
         f"""
@@ -70,16 +72,18 @@ with tab2:
     file = "worldcities.csv"
     data = pd.read_csv(file)
 
-
+    col1, col2 = st.columns(2)
+    
     # Select Country
-    country_set = set(data.loc[:,"country"])
-    country = st.selectbox('Select a country', options=country_set)
+    with col1:
+        country_set = set(data.loc[:,"country"])
+        country = st.selectbox('Select a country', options=country_set)
 
-    country_data = data.loc[data.loc[:,"country"] == country,:]
+        country_data = data.loc[data.loc[:,"country"] == country,:]
 
-    city_set = country_data.loc[:,"city_ascii"] 
-
-    city = st.selectbox('Select a city', options=city_set)
+    with col2:
+        city_set = country_data.loc[:,"city_ascii"] 
+        city = st.selectbox('Select a city', options=city_set)
 
 
     lat = float(country_data.loc[data.loc[:,"city_ascii"] == city, "lat"])
