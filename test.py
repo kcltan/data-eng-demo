@@ -67,6 +67,52 @@ with tab2:
     # Title and description for your app
     st.title("How's the weather? :sun_behind_rain_cloud:")
 
+    st.subheader("Major Cities")
+
+    # set the list of capital cities to track
+cities = ['London', 'Paris', 'Berlin', 'Madrid', 'Rome', 'Athens', 'Moscow', 'Tokyo', 'Beijing', 'New York']
+
+# set the Open Meteo API endpoint and parameters
+url = 'https://api.open-meteo.com/v1/forecast'
+params = {'current_weather': 'true'}
+
+# create a Streamlit app
+st.title('Weather in Capital Cities')
+st.write('Current weather conditions in the selected capital cities')
+
+# load the city data using the OpenCage Geocoder API
+city_data = pd.DataFrame(columns=['city', 'country', 'lat', 'lng'])
+for city in cities:
+    geocode_url = f'https://api.opencagedata.com/geocode/v1/json?q={city}&key=cfabe70ce78645eabb313cde0f258a09'
+    geocode_response = requests.get(geocode_url)
+    if geocode_response.status_code == 200:
+        geocode_data = geocode_response.json()
+        country = geocode_data['results'][0]['components']['country']
+        lat = geocode_data['results'][0]['geometry']['lat']
+        lng = geocode_data['results'][0]['geometry']['lng']
+        city_data = city_data.append({'city': city, 'country': country, 'lat': lat, 'lng': lng}, ignore_index=True)
+    else:
+        st.write(f'Error getting geocode data for {city}.')
+        continue
+
+# create a widget for each city
+for i, city in enumerate(cities):
+    # get the latitude and longitude of the current city from the city data
+    lat = city_data.loc[i, 'lat']
+    lng = city_data.loc[i, 'lng']
+    
+    # set the latitude and longitude parameters and make the API request
+    params['latitude'] = lat
+    params['longitude'] = lng
+    response = requests.get(url, params=params)
+    
+    # check if the API request was successful
+    if response.status_code == 200:
+        # get the weather data for the current city
+        data = response.json()['current_weather']
+        
+        # create two columns for
+
     st.subheader("Choose location")
 
     file = "worldcities.csv"
