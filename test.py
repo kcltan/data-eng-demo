@@ -237,6 +237,19 @@ with tab3:
     st.title('Stocks Daily Performance')
     st.write('Daily performance of the selected stocks')
 
-    # show the stock data in a line chart
-    st.line_chart(stock_data)
-
+    # create a widget for each stock
+    for ticker in tickers:
+        # get the stock data for the current ticker
+        data = stock_data[ticker]
+        
+        # create a slider widget for the stock data
+        min_value = data.min()
+        max_value = data.max()
+        default_value = data.iloc[-1]
+        value = st.slider(ticker, min_value, max_value, default_value)
+        
+        # show the stock data in a line chart
+        st.line_chart(data)
+        
+        # show the current value of the stock
+        st.write(f'Current value of {ticker}: {value}')
