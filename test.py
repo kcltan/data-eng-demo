@@ -69,28 +69,27 @@ with tab2:
 
     st.subheader("Major Cities")
     
-        # set the list of capital cities to track
+    # set the list of capital cities to track
     cities = ['London', 'Paris', 'Berlin', 'Madrid', 'Rome', 'Athens', 'Moscow', 'Tokyo', 'Beijing', 'New York']
 
     # set the Open Meteo API endpoint and parameters
     url = 'https://api.open-meteo.com/v1/forecast'
     params = {'current_weather': 'true'}
 
-    # load the city data from the CSV file
     file = "worldcities.csv"
     data = pd.read_csv(file)
 
     # create a Streamlit app
     st.title('Weather in Capital Cities')
     st.write('Current weather conditions in the selected capital cities')
+    country_set = set(data.loc[:,"country"])
+    country_data = data.loc[data.loc[:,"city_ascii"] == country,:]
 
     # create a widget for each city
     for city in cities:
         
-        # get the latitude and longitude of the current city from the city data
-        country_data = data.loc[data.loc[:, "city_ascii"] == city, :]
-        lat = float(country_data.loc[:, "lat"])
-        lng = float(country_data.loc[:, "lng"])
+        lat = float(country_data.loc[data.loc[:,"city_ascii"] == city, "lat"])
+        lng = float(country_data.loc[data.loc[:,"city_ascii"] == city, "lng"])
         
         # set the latitude and longitude parameters and make the API request
         params['latitude'] = lat
@@ -115,14 +114,19 @@ with tab2:
                 st.metric(label='Description', value=data['weather']['description'].title())
             
             # show the current humidity and wind speed
-            with col1:
-                st.metric(label='Humidity', value=f"{data['humidity']}%")
-            with col2:
-                st.metric(label='Wind Speed', value=f"{data['wind_speed']} m/s")
-            
-            # add a separator between the cities
-            st.write('---')
-  
+                with col1:
+                    st.metric(label='Humidity', value=f"{data['humidity']}%")
+                with col2:
+                    st.metric(label='Wind Speed', value=f"{data['wind_speed']} m/s")
+                
+                # add a separator between the cities
+                st.write('---')
+   
+
+
+
+    """
+    """
     st.subheader("Choose location")
 
     file = "worldcities.csv"
