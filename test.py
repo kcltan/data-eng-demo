@@ -228,7 +228,6 @@ with tab2:
         st_data = folium_static(m, height = 370)
         
 with tab3:
-
     # set the list of stock tickers to track
     tickers = ['AAPL', 'MSFT', 'AMZN', 'GOOGL']
 
@@ -244,18 +243,25 @@ with tab3:
         # get the stock data for the current ticker
         data = stock_data[ticker]
         
+        # create two columns for the stock values
+        col1, col2 = st.columns(2)
+        
         # show the stock name in bold
-        st.write(f'**{ticker}**')
+        with col1:
+            st.write(f'**{ticker}**')
         
         # show the current value of the stock
-        st.write(f'Current value: {data.iloc[-1]}')
+        with col2:
+            st.metric(label='Current value', value=f'{data.iloc[-1]:.2f}')
         
         # show the previous day's closing value of the stock
-        st.write(f'Previous day\'s closing value: {data.iloc[-2]}')
+        with col1:
+            st.metric(label='Previous day\'s closing value', value=f'{data.iloc[-2]:.2f}')
         
         # show the percentage change in the stock value
         change = (data.iloc[-1] - data.iloc[-2]) / data.iloc[-2] * 100
-        st.write(f'Percentage change: {change:.2f}%')
+        with col2:
+            st.metric(label='Percentage change', value=f'{change:.2f}%')
         
         # add a separator between the stocks
         st.write('---')
