@@ -27,7 +27,7 @@ with tab1:
         response = requests.get(NEWS_API_ENDPOINT, params=params)
         return response.json()
 
-    st.title('News Aggregator')
+    st.title('News Aggregator 📰')
   
     categories = ['All','Business', 'Entertainment', 'General', 'Health', 'Science', 'Sports', 'Technology']
     selected_category = st.selectbox('Select a category (optional)', categories)
@@ -220,7 +220,7 @@ with tab3:
     stock_data = yf.download(tickers, period='2d')['Close']
 
     # create a Streamlit app
-    st.title('Stocks Daily Performance')
+    st.title('Stocks Daily Performance 📈')
     st.write('Daily performance of the selected stocks')
 
     # create a list of rows to store the stock widgets
