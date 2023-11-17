@@ -214,6 +214,22 @@ with tab3:
     st.title('Stocks Daily Performance')
     st.write('Daily performance of the selected stocks')
 
+    # create a single row for all the stocks
+    row = st.columns(len(tickers))
+
+    # create a widget for each stock
+    for i, ticker in enumerate(tickers):
+        # get the stock data for the current ticker
+        data = stock_data[ticker]
+        
+        # show the current value of the stock
+        current_value = data.iloc[-1]
+        change = (current_value - data.iloc[-2]) / data.iloc[-2] * 100
+        row[i].metric(label=ticker, value=f'{current_value:.2f}', delta=f'{change:.2f}%')
+
+
+
+    """
     # create a widget for each stock
     for ticker in tickers:
         # get the stock data for the current ticker
@@ -223,6 +239,5 @@ with tab3:
         # show the current value of the stock
         change = (data.iloc[-1] - data.iloc[-2]) / data.iloc[-2] * 100
         st.metric(label='Current value', value=f'{data.iloc[-1]:.2f}',delta=change)
-        
-        # add a separator between the stocks
-        st.write('---')
+    """    
+       
