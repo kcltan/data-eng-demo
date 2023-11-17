@@ -28,12 +28,9 @@ with tab1:
         return response.json()
 
     st.title('News Aggregator')
-    col1 = st.columns(1)
-
-    # Choose the category
-    with col1:
-        categories = ['All','Business', 'Entertainment', 'General', 'Health', 'Science', 'Sports', 'Technology']
-        selected_category = st.selectbox('Select a category (optional)', categories)
+  
+    categories = ['All','Business', 'Entertainment', 'General', 'Health', 'Science', 'Sports', 'Technology']
+    selected_category = st.selectbox('Select a category (optional)', categories)
 
     # Fetch the news
     if selected_category == 'All':
