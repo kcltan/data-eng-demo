@@ -110,7 +110,7 @@ with tab2:
         common_dir = "N/NE"
 
     col1,col2,col3 = st.columns(3)
-    col1.metric(label="Temperature", value=temp)
+    col1.metric(label="Temperature", value=temp+" °C")
     col2.metric(label="Wind Speed", value=speed)
     col3.metric(label='Wind Direction (Origin)', value=common_dir)
     
