@@ -205,7 +205,7 @@ with tab2:
         
 with tab3:
     # set the list of stock tickers to track
-    tickers = ['AAPL', 'MSFT', 'AMZN', 'GOOGL']
+    tickers = ['AAPL', 'MSFT', 'AMZN', 'GOOGL','TCEHY','TSLA','WMT','FB','SSNLF','JNJ','TSM','NSRGY']
 
     # get the daily performance of the stocks using the Yahoo Finance API
     stock_data = yf.download(tickers, period='2d')['Close']
@@ -232,8 +232,6 @@ with tab3:
         
         # add the stock widget to the current row
         rows[-1][i % 4].metric(label=ticker, value=f'{current_value:.2f}', delta=f'{change:.2f}%')
-
-
 
 
     '''
