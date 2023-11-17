@@ -204,6 +204,13 @@ with tab2:
         st_data = folium_static(m, height = 370)
         
 with tab3:
+
+    # get the current date
+    today = datetime.today().strftime('%d/%m/%Y')
+
+    # display the last updated message and today's date
+    st.write(f'Last updated: {today}')
+
     # set the list of stock tickers to track
     tickers = ['AAPL', 'MSFT', 'AMZN', 'GOOGL','TCEHY','TSLA','WMT','FB','SSNLF','JNJ','TSM','NSRGY']
 
@@ -232,20 +239,3 @@ with tab3:
         
         # add the stock widget to the current row
         rows[-1][i % 4].metric(label=ticker, value=f'{current_value:.2f}', delta=f'{change:.2f}%')
-
-
-    '''
-    # create a single row for all the stocks
-    row = st.columns(len(tickers))
-
-    # create a widget for each stock
-    for i, ticker in enumerate(tickers):
-        # get the stock data for the current ticker
-        data = stock_data[ticker]
-        
-        # show the current value of the stock
-        current_value = data.iloc[-1]
-        change = (current_value - data.iloc[-2]) / data.iloc[-2] * 100
-        row[i].metric(label=ticker, value=f'{current_value:.2f}', delta=f'{change:.2f}%')
-    '''
-       
