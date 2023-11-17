@@ -109,8 +109,12 @@ with tab2:
     elif direction >= (22.5-ddeg) and direction < (22.5+ddeg):
         common_dir = "N/NE"
 
-
-    st.info(f"The current temperature is {temp} °C. \n The wind speed is {speed} m/s. \n The wind is coming from {common_dir}.")
+    col1,col2,col3 = st.columns(3)
+    col1.metric(label="Temperature", value=temp)
+    col2.metric(label="Wind Speed", value=speed)
+    col3.metric(label='Wind Direction (Origin)', value=common_dir)
+    
+    'st.info(f"The current temperature is {temp} °C. \n The wind speed is {speed} m/s. \n The wind is coming from {common_dir}.")'
 
     st.subheader("Week ahead")
 
