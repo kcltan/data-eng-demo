@@ -44,9 +44,7 @@ with tab1:
 
 with tab2:
     # Title and description for your app
-    st.title("How's the weather? :sun_behind_rain_cloud:")
-
-    st.subheader("Choose location")
+    st.title("How's the weather in London? :sun_behind_rain_cloud:")
 
     file = "worldcities.csv"
     data = pd.read_csv(file)
