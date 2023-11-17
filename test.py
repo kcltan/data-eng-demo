@@ -51,22 +51,14 @@ with tab2:
     file = "worldcities.csv"
     data = pd.read_csv(file)
 
-    col1, col2 = st.columns(2)
-    
-    # Select Country
-    
-    with col1:
-        country_set = set(data.loc[:,"country"])
-        '''
-        country = st.selectbox('Select a country', options=country_set)
-        '''
-        country_data = data.loc[data.loc[:,"country"] == 'United Kingdom',:]
 
-    with col2:
-        city_set = country_data.loc[:,"city_ascii"] 
-        '''
-        city = st.selectbox('Select a city', options=city_set)
-        '''
+    country_set = set(data.loc[:,"country"])
+    
+    country_data = data.loc[data.loc[:,"country"] == 'United Kingdom',:]
+
+
+    city_set = country_data.loc[:,"city_ascii"] 
+    
 
     lat = float(country_data.loc[data.loc[:,"city_ascii"] == 'London', "lat"])
     lng = float(country_data.loc[data.loc[:,"city_ascii"] == 'London', "lng"])
@@ -193,8 +185,8 @@ with tab2:
         # center on Liberty Bell, add marker
         m = folium.Map(location=[lat, lng], zoom_start=7)
         folium.Marker([lat, lng], 
-                popup=city+', '+country, 
-                tooltip=city+', '+country).add_to(m)
+                popup='London'+', '+'United Kingdom', 
+                tooltip='London'+', '+'United Kingdom').add_to(m)
         
         # call to render Folium map in Streamlit
         
