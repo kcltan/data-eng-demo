@@ -28,36 +28,18 @@ with tab1:
         return response.json()
 
     st.title('News Aggregator')
-    col1, col2 = st.columns(2)
-
-    # Choose the country
-    with col1:
-        countries = ['US', 'GB', 'IN', 'CA', 'AU', 'FR', 'DE', 'JP', 'CN', 'RU', 'BR', 'MX', 'IT', 'ES', 'KR']# add more countries as needed
-        selected_country = st.selectbox('Select a country', countries)
+    col1 = st.columns(1)
 
     # Choose the category
-    with col2:
+    with col1:
         categories = ['All','Business', 'Entertainment', 'General', 'Health', 'Science', 'Sports', 'Technology']
         selected_category = st.selectbox('Select a category (optional)', categories)
 
-    st.markdown(
-        f"""
-        <style>
-        .stApp {{
-            background-image: url("https://images.unsplash.com/photo-1585241645927-c7a8e5840c42?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8Nnx8fGVufDB8fHx8&w=1000&q=80");
-            background-attachment: fixed;
-            background-size: cover
-        }}
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
-
     # Fetch the news
     if selected_category == 'All':
-        news = fetch_news(selected_country)
+        news = fetch_news('GB')
     else:
-        news = fetch_news(selected_country, category=selected_category)
+        news = fetch_news('GB', category=selected_category)
 
     # Display the news articles
     for article in news['articles']:
@@ -75,19 +57,22 @@ with tab2:
     col1, col2 = st.columns(2)
     
     # Select Country
+    
     with col1:
         country_set = set(data.loc[:,"country"])
+        '''
         country = st.selectbox('Select a country', options=country_set)
-
-        country_data = data.loc[data.loc[:,"country"] == country,:]
+        '''
+        country_data = data.loc[data.loc[:,"country"] == 'United Kingdom',:]
 
     with col2:
         city_set = country_data.loc[:,"city_ascii"] 
+        '''
         city = st.selectbox('Select a city', options=city_set)
+        '''
 
-
-    lat = float(country_data.loc[data.loc[:,"city_ascii"] == city, "lat"])
-    lng = float(country_data.loc[data.loc[:,"city_ascii"] == city, "lng"])
+    lat = float(country_data.loc[data.loc[:,"city_ascii"] == 'London', "lat"])
+    lng = float(country_data.loc[data.loc[:,"city_ascii"] == 'London', "lng"])
 
     response_current = requests.get(f'https://api.open-meteo.com/v1/forecast?latitude={lat}&longitude={lng}&current_weather=true')
 
