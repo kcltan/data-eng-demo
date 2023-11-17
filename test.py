@@ -114,8 +114,6 @@ with tab2:
     col2.metric(label="Wind Speed", value=speed)
     col3.metric(label='Wind Direction (Origin)', value=common_dir)
     
-    'st.info(f"The current temperature is {temp} °C. \n The wind speed is {speed} m/s. \n The wind is coming from {common_dir}.")'
-
     st.subheader("Week ahead")
 
     st.write('Temperature and rain forecast one week ahead & city location on the map', unsafe_allow_html=True)
