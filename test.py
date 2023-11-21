@@ -128,7 +128,7 @@ with tab2:
         hourly_df.rename(columns = {'precipitation':'Precipitation mm'}, inplace = True)
         
         tz = tzwhere.tzwhere(forceTZ=True)
-        timezone_str = tz.tzNameAt(lat, lng, forceTZ=True) # Seville coordinates
+        timezone_str = tz.tzNameAt(lat, lng, forceTZ=True)
         
         timezone_loc = pytz.timezone(timezone_str)
         dt = datetime.now()
